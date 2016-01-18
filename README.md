@@ -1,2 +1,2 @@
 # TeamBell
-SoftUni game project. Team Bell.
+SoftUni JavaScript game project. Team Bell.
