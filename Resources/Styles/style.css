@@ -1,13 +1,11 @@
 body {
-    background-color: rgb(230,230,230);
-    font-family: Calibri, Arial, sans-serif;
-}
-
-body {
     height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
+    background-color: rgb(230,230,230);
+    font-family: Calibri, Arial, sans-serif;
 }
 
 #gameCanvas {

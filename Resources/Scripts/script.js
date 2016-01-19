@@ -149,15 +149,49 @@ window.onload = function() {
     
     // Gameplay Functions
     
+    function drawMatrix() {
+        // Drawing the matrix background
+        context.fillStyle = "darkgray";
+        context.fillRect(200,50,200,400);
+        
+        // Drawing the matrix lines
+        var horizontalLines = 20;
+        var verticalLines = 10;
+        var offsetX = 200;
+        var offsetY = 50;
+        var scale = 20; // cube width/height
+        var matrixWidth = verticalLines * scale;
+        var matrixHeight = horizontalLines * scale;
+                
+        context.strokeStyle = "#a0a0a0";
+        for (var i = 1; i <= verticalLines - 1; i++) {
+            context.moveTo(offsetX + i * scale, offsetY + 0 * scale);
+            context.lineTo(offsetX + i * scale, offsetY + matrixHeight);
+            context.stroke();
+        }
+        for (var i = 1; i <= horizontalLines - 1; i++) {
+            context.moveTo(offsetX + 0 * scale, offsetY + i * scale);
+            context.lineTo(offsetX + matrixWidth, offsetY + i * scale);
+            context.stroke();
+        }
+        
+        context.strokeStyle = "black";
+        context.strokeRect(offsetX, offsetY, scale * verticalLines, scale * horizontalLines);
+    }
+    
     function drawGamePlay() {
         if (redrawingIsNeeded) {
             
             context.clearRect(0,0,width,height);
             
+            drawMatrix();
+            
             redrawingIsNeeded = false;
         }
         
         // DRAWING OF MATRIX AND FALLING BRICKS GO HERE
+        
+        
     }
     
     function beginGame() {
