@@ -34,12 +34,13 @@ function Figure(index) {
     this.matrix = figures[index];
 }
 
-function rotateFigure(figure) {
+Figure.prototype.rotate = function() {
     var temp = [];
-    for (var i = 0; i < figure.matrix[0].length; i++) {
+
+    for (var i = 0; i < this.matrix[0].length; i++) {
         temp[i] = [];
-        for (var j = 0; j < figure.matrix.length; j++) {
-            temp[i][figure.matrix.length - j - 1] = figure.matrix[j][i];
+        for (var j = 0; j < this.matrix.length; j++) {
+            temp[i][this.matrix.length - j - 1] = this.matrix[j][i];
         }
     }
 
