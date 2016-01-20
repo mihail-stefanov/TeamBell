@@ -187,15 +187,20 @@ window.onload = function() {
         if (redrawingIsNeeded) {
             
             context.clearRect(0,0,width,height);
-            
+
+
             drawMatrix();
             
             redrawingIsNeeded = false;
         }
         
         // DRAWING OF MATRIX AND FALLING BRICKS GO HERE
-        
-        
+
+        //Render the score on the canvas.
+        //Parameter - the current score
+        //Currently the score is hardcoded as 0
+        renderScore(0);
+
     }
     
     function beginGame() {
@@ -231,6 +236,17 @@ window.onload = function() {
         canvas.onmousedown = pressButton;
         canvas.onmouseup = releaseButton;
         
+    }
+
+    function renderScore(score) {
+        context.fillStyle = 'black';
+        context.fillRect(199,30,202,20);
+        context.font = '20px Consolas';
+        context.strokeStyle = 'red';
+
+        var output = 'Score: ' + score;
+        context.strokeText(output, 280, 47);
+        context.strokeRect();
     }
 
     // PERFORMING INITIALIZATION
