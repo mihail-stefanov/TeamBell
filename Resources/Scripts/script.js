@@ -163,7 +163,6 @@ function releaseButton(eventObject) {
 }
 
 // ==================== DEFINITION OF THE SEPARATE STAGES OF THE GAME ====================
-// Defining initializing the objects and draw loop
 
 function initialize() {
     getEnvironment();

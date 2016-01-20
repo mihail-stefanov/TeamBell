@@ -1,4 +1,4 @@
-// Container for the start screen functions
+// Start Screen Functions
 
 // ==================== DEFINITIONS OF THINGS TO EXIST ON THE START SCREEN ====================
 
