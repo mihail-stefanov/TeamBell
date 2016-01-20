@@ -56,6 +56,7 @@ var buttonName = {
     play: "play", 
     options: "options", 
     help: "help", 
+    highScores: "highScores",
     exit: "exit", 
     easy: "easy", 
     normal: "normal", 
@@ -63,9 +64,10 @@ var buttonName = {
 };
 
 var buttons = [];
-buttons.push(new Button(250,200,300,50,"gray", buttonName.play));
-buttons.push(new Button(250,300,300,50,"gray", buttonName.options));
-buttons.push(new Button(250,400,300,50,"gray", buttonName.help));
+//buttons.push(new Button(250,200,300,50,"gray", buttonName.play));
+//buttons.push(new Button(250,300,300,50,"gray", buttonName.options));
+//buttons.push(new Button(250,400,300,50,"gray", buttonName.help));
+//buttons.push(new Button(250,500,300,50,"gray", buttonName.highScores));
 
 function highlightButton(eventObject) {
     getMousePosition(eventObject);
@@ -138,6 +140,10 @@ function releaseButton(eventObject) {
                 case buttonName.help:
                     showGameHelp();
                     break;
+                    
+                case buttonName.highScores:
+                    showHighScores();
+                    break;
                 
                 case buttonName.exit:
                     initialize();
@@ -202,6 +208,17 @@ function showGameHelp() {
     // Drawing loop
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawHelpScreen, redrawInterval);
+}
+
+function showHighScores() {
+    
+    // Initial drawing
+    initializeScoresScreenElements();
+    drawScoresScreen();
+
+    // Drawing loop
+    clearInterval(redrawIntervalHandle);
+    redrawIntervalHandle = setInterval(drawScoresScreen, redrawInterval);
 }
 
 
