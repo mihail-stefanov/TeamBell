@@ -18,7 +18,9 @@ window.onload = function() {
     var mouseY;
     
     var redrawingIsNeeded = true;
-    
+
+    var timer = new Timer();
+
     var gameStage = 'startScreen';
     
     // Defining start screen functions
@@ -130,8 +132,10 @@ window.onload = function() {
                 if (i == 0) {
                     redrawingIsNeeded = true;
                     beginGame();
+                    timer.startPause();
                 } else if (i == 1) {
                     showOptions();
+
                 } else if (i == 2) {
                     showInstructions();
                 }
