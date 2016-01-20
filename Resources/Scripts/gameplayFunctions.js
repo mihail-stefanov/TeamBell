@@ -1,12 +1,20 @@
 // Gameplay Functions
 
-// ==================== DEFINITIONS OF THINGS TO BE EXIST ON THE OPTIONS SCREEN ====================
+// ==================== DEFINITIONS OF THINGS TO EXIST DURING THE GAMEPLAY ====================
 
 function initializeGameplayElements() {
     buttons = new Array();
+    buttons.push(new Button(740,10,50,50,"gray", buttonName.exit));
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
+
+function drawGameplayButtons() {
+    // Buttons bodies        
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].draw();
+    }
+}
 
 function drawMatrix() {
     // Drawing the matrix background
@@ -49,7 +57,12 @@ function drawScore(score) {
 //    context.strokeRect(); // Gives error - consider changing
 }
 
-
+function drawGameplayText() {
+    // Buttons text
+    context.fillStyle = "black";
+    context.font = '35px Arial';
+    context.fillText("X", 753,47);
+}
 
 // ==================== FUNCTION CALLED REPETITIVELY ====================
 
@@ -58,10 +71,14 @@ function drawGamePlay() {
     if (redrawingIsNeeded) {
 
         context.clearRect(0,0,width,height);
+        
+        drawGameplayButtons();
 
         drawMatrix();
         
         drawScore(score);
+        
+        drawGameplayText();
 
         redrawingIsNeeded = false;
     }

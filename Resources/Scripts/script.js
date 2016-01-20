@@ -3,7 +3,7 @@
 // Standard tetrix grid dimentions: 10 x 20 boxes
 // A figure element (box) will 20px by 20px
 
-// ==================== DEFINING COMMON VARIABLES ====================
+// ==================== DEFINITION OF COMMON VARIABLES ====================
 
 var canvas;
 var context;
@@ -37,7 +37,7 @@ function getEnvironment() {
     height = canvas.height;
 }
 
-// ==================== DEFINING BUTTONS AND THEIR BEHAVIOUR ====================
+// ==================== DEFINITION OF BUTTONS AND THEIR BEHAVIOUR ====================
 
 function Button(x,y,w,h,color,name) {
     this.x = x;
@@ -77,11 +77,15 @@ function highlightButton(eventObject) {
         var mouseOverlapsButtonOnY = mouseY > currentButton.y && mouseY < currentButton.y + currentButton.h;
 
         if (mouseOverlapsButtonOnX && mouseOverlapsButtonOnY) {
-            buttons[i].color = "orange";
-            redrawingIsNeeded = true;
-        } else {
+            if (buttons[i].color == "gray") {
+                buttons[i].color = "orange";
+                redrawingIsNeeded = true;
+                console.log("redrawing");
+            }
+        } else if (buttons[i].color == "orange") {
             buttons[i].color = "gray";
             redrawingIsNeeded = true;
+            console.log("redrawing");
         }
     }
 }
@@ -158,7 +162,7 @@ function releaseButton(eventObject) {
     }
 }
 
-// ==================== DEFINING SEPARATE STAGES OF THE GAME ====================
+// ==================== DEFINITION OF THE SEPARATE STAGES OF THE GAME ====================
 // Defining initializing the objects and draw loop
 
 function initialize() {
@@ -188,25 +192,17 @@ function showGameOptions() {
     // Drawing loop
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawOptionsScreen, redrawInterval);
-    
-    // Defining mouse events
-    canvas.onmousemove = highlightButton;
-    canvas.onmousedown = pressButton;
-    canvas.onmouseup = releaseButton;
 }
 
 function showGameHelp() {
     
     // Initial drawing
+    initializeHelpScreenElements();
     drawHelpScreen();
 
     // Drawing loop
-    setInterval(drawHelpScreen, redrawInterval);
-    
-    // Defining mouse events
-    canvas.onmousemove = null; // TO BE DEFINED LATER
-    canvas.onmousedown = null; // TO BE DEFINED LATER
-    canvas.onmouseup = null; // TO BE DEFINED LATER
+    clearInterval(redrawIntervalHandle);
+    redrawIntervalHandle = setInterval(drawHelpScreen, redrawInterval);
 }
 
 
@@ -220,10 +216,8 @@ function beginGame() {
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
     
-    // Defining mouse events
-    canvas.onmousemove = null; // TO BE DEFINED LATER
-    canvas.onmousedown = null; // TO BE DEFINED LATER
-    canvas.onmouseup = null; // TO BE DEFINED LATER
+    // Defining events
+        // TODO: Keypress events to be defined
 }
 
 // ==================== PERFORMING INITIALIZATION ====================

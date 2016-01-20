@@ -1,6 +1,6 @@
 // Options Screen Functions
 
-// ==================== DEFINITIONS OF THINGS TO BE EXIST ON THE OPTIONS SCREEN ====================
+// ==================== DEFINITIONS OF THINGS TO EXIST ON THE OPTIONS SCREEN ====================
 
 function initializeOptionsScreenElements() {
     buttons = new Array();

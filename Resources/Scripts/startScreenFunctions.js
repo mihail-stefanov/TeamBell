@@ -1,6 +1,6 @@
 // Container for the start screen functions
 
-// ==================== DEFINITIONS OF THINGS TO BE EXIST ON THE START SCREEN ====================
+// ==================== DEFINITIONS OF THINGS TO EXIST ON THE START SCREEN ====================
 
 function initializeStartScreenElements() {
     buttons = new Array();
