@@ -22,6 +22,9 @@ var difficultyOptions = { easy: 'easy', normal: 'normal', hard: 'hard' };
 var chosenDifficulty = difficultyOptions.normal;
 
 var score = 0;
+var rows = 20;
+var cols = 10;
+var board = [];
 
 function getMousePosition(eventObject) {
     mouseX = eventObject.pageX - canvas.offsetLeft;
