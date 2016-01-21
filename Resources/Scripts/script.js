@@ -2,6 +2,7 @@
 // Well dimentions: 200px by 400px
 // Standard tetrix grid dimentions: 10 x 20 boxes
 // A figure element (box) will 20px by 20px
+// Preview box is 120px by 120px
 
 // ==================== DEFINITION OF COMMON VARIABLES ====================
 

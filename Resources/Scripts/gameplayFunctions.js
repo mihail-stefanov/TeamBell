@@ -15,6 +15,7 @@ var matrixHeight = horizontalLines * scale;
 
 
 function initializeGameplayElements() {
+    document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
     buttons = new Array();
     previousTime = 0;
     buttons.push(new Button(740, 10, 50, 50, "gray", buttonName.exit));
@@ -31,28 +32,6 @@ function drawGameplayButtons() {
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].draw();
     }
-}
-
-function drawBoard() {
-    // Drawing the matrix background
-    context.fillStyle = "darkgray";
-    context.fillRect(200, 50, 200, 400);
-
-    // Drawing the matrix lines
-    context.strokeStyle = "#a0a0a0";
-    for (var i = 1; i <= verticalLines - 1; i++) {
-        context.moveTo(offsetX + i * scale, offsetY + 0 * scale);
-        context.lineTo(offsetX + i * scale, offsetY + matrixHeight);
-        context.stroke();
-    }
-    for (var i = 1; i <= horizontalLines - 1; i++) {
-        context.moveTo(offsetX + 0 * scale, offsetY + i * scale);
-        context.lineTo(offsetX + matrixWidth, offsetY + i * scale);
-        context.stroke();
-    }
-
-    context.strokeStyle = "black";
-    context.strokeRect(offsetX, offsetY, scale * verticalLines, scale * horizontalLines);
 }
 
 function drawScore(score) {
@@ -132,8 +111,6 @@ function drawGamePlay() {
         context.clearRect(0, 0, width, height);
 
         drawGameplayButtons();
-
-        drawBoard();
 
         drawCurrentFigure(currentFigure);
 
