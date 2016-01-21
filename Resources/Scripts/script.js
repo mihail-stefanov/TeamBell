@@ -238,7 +238,29 @@ function beginGame() {
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
     
     // Defining events
-        // TODO: Keypress events to be defined
+    canvas.addEventListener("keydown", moveObjects,false);
+
+}
+
+var moveObjects = function (e){
+    switch(e.keyCode) {
+        case 37:
+            // left key pressed
+            console.log("left");
+            break;
+        case 38:
+            // up key pressed
+            console.log("up");
+            break;
+        case 39:
+            // right key pressed
+            console.log("right");
+            break;
+        case 40:
+            // down key pressed
+            console.log("down");
+            break;
+    }
 }
 
 // ==================== PERFORMING INITIALIZATION ====================
