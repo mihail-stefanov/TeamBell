@@ -133,7 +133,6 @@ function releaseButton(eventObject) {
                     
                 case buttonName.play:
                     beginGame();
-                    timer.startPause();
                     break;
                     
                 case buttonName.options:
@@ -230,7 +229,7 @@ function beginGame() {
     // Initial drawing
     initializeGameplayElements();
     drawGamePlay();
-
+    timer.startPause();
     // Drawing loop
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
