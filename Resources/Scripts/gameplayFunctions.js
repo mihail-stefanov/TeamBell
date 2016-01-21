@@ -21,7 +21,7 @@ function initializeGameplayElements() {
     initializeGameBoard(board);
     currentFigure = generateFigure();
 
-    window.requestAnimationFrame(update);
+//    window.requestAnimationFrame(update);
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
@@ -103,6 +103,8 @@ function update() {
     if (currentTime - previousTime > 500) {
         if (true) {
             currentFigure.y += 1;
+            redrawingIsNeeded = true;
+            console.log("gameplay updated");
         } else {
 
             currentFigure = generateFigure();
@@ -111,10 +113,10 @@ function update() {
         previousTime = currentTime;
     }
 
-    drawGamePlay();
+//    drawGamePlay();
 
 
-    requestAnimationFrame(update);
+//    requestAnimationFrame(update);
 
     //
     //if (isGameOver()) {
@@ -126,6 +128,7 @@ function update() {
 
 function drawGamePlay() {
     if (redrawingIsNeeded) {
+        
         context.clearRect(0, 0, width, height);
 
         drawGameplayButtons();
@@ -138,6 +141,6 @@ function drawGamePlay() {
 
         drawGameplayText();
 
-        //redrawingIsNeeded = false;
+        redrawingIsNeeded = false;
     }
 }

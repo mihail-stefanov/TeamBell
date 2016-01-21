@@ -15,6 +15,7 @@ var mouseY;
 var redrawingIsNeeded = true;
 var redrawInterval = 20;
 var redrawIntervalHandle = setInterval(null, redrawInterval);
+var updateIntervalHandle = setInterval(null, 20);
 
 var timer = new Timer();
 
@@ -180,6 +181,7 @@ function initialize() {
     drawStartScreen();
 
     // Drawing loop
+    clearInterval(updateIntervalHandle);
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawStartScreen, redrawInterval);
     
@@ -232,6 +234,7 @@ function beginGame() {
     timer.startPause();
     // Drawing loop
     clearInterval(redrawIntervalHandle);
+    updateIntervalHandle = setInterval(update, 20);
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
     
     // Defining events
