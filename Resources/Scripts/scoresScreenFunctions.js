@@ -5,18 +5,27 @@
 // Extracting the scores from a JSON file via AJAX
 var scores;
 
-var dataRequest = new XMLHttpRequest();
+var scoresObtained = false;
 
-dataRequest.onreadystatechange = function() {
-    if(dataRequest.readyState == 4 && dataRequest.status === 200) {
-        scores = JSON.parse(dataRequest.responseText);
-        redrawingIsNeeded = true;
-    }
-};
+var dataRequest;
 
-// Performed only once when the game is loaded so that a new score can be added by the current player
-dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
-dataRequest.send(null);
+try {
+    dataRequest = new XMLHttpRequest();
+
+    dataRequest.onreadystatechange = function() {
+        if(dataRequest.readyState == 4 && dataRequest.status === 200) {
+            scores = JSON.parse(dataRequest.responseText);
+            scoresObtained = true;
+            redrawingIsNeeded = true;
+        }
+    };
+
+    // Performed only once when the game is loaded so that a new score can be added by the current player
+    dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
+    dataRequest.send(null);
+} catch(err) {
+    scoresObtained = false;
+}
 
 function initializeScoresScreenElements() {
     buttons = new Array();
@@ -48,7 +57,7 @@ function drawScoresScreenText() {
 }
 
 function drawScores() { 
-    if (scores != null) {
+    if (scoresObtained) {
         context.font = 'bold 25px Consolas';
     
         context.fillStyle = "rgb(224, 224, 224)";
@@ -75,6 +84,8 @@ function drawScores() {
             context.fillText(scores[i].name, 200, 110 + (i + 1) * 35);
             context.fillText(scores[i].score, 600, 110 + (i + 1) * 35);
         }
+    } else {
+        context.fillText("Could not obtain scores at the moment.", 100, 200);
     }
     
 }
