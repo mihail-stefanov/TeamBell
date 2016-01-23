@@ -45,7 +45,7 @@ Figure.prototype.rotate = function() {
     }
     var testFigure = new Figure(0);
     testFigure.matrix = temp;
-    if (CheckMove(testFigure, this.x, this.y)) {
+    if (checkMove(testFigure, this.x, this.y)) {
         return temp;
     }
 
@@ -59,6 +59,6 @@ function generateFigure() {
     var pieceColor = Math.floor(Math.random());
 
     piece = new Figure(figureTypeIndex);
-    piece.color = pieceColor;
+    piece.color = 1 ;
     return piece;
 }

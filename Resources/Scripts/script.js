@@ -249,9 +249,8 @@ var moveObjects = function (e) {
     switch (e.keyCode) {
         case 37:
             // left key pressed
-            if (CheckMove(currentFigure, currentFigure.x - 1, currentFigure.y)) {
+            if (checkMove(currentFigure, currentFigure.x - 1, currentFigure.y)) {
                 currentFigure.x -= 1;
-                drawCurrentFigure();
             }
 
             break;
@@ -259,18 +258,18 @@ var moveObjects = function (e) {
             // up key pressed
             currentFigure.matrix = currentFigure.rotate();
             break;
-            drawCurrentFigure();
         case 39:
             // right key pressed
-            if (CheckMove(currentFigure, currentFigure.x + 1, currentFigure.y)) {
+            if (checkMove(currentFigure, currentFigure.x + 1, currentFigure.y)) {
                 currentFigure.x += 1;
-                drawCurrentFigure();
             }
         case 40:
             // down key pressed
-            console.log("down");
             break;
     }
+
+    redrawingIsNeeded = true;
+
 }
 
 // ==================== PERFORMING INITIALIZATION ====================

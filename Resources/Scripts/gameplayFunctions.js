@@ -45,6 +45,18 @@ function drawScore(score) {
 //    context.strokeRect(); // Gives error - consider changing
 }
 
+function drawGameBoard() {
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[i].length; j++) {
+            if (board[i][j]) {
+                context.fillStyle = "white";
+                context.fillRect(200 + j * scale, 50 + i * scale, scale, scale);
+
+            }
+        }
+    }
+}
+
 function drawGameplayText() {
     // Buttons text
     context.fillStyle = "black";
@@ -63,7 +75,7 @@ function drawCurrentFigure(figure) {
                 continue;
             }
 
-            if (matrix[i][j] ) {
+            if (matrix[i][j]) {
                 context.fillStyle = "red";
                 context.fillRect(200 + x * scale + j * scale, 50 + y * scale + i * scale, scale, scale);
             }
@@ -84,19 +96,17 @@ function initializeGameBoard(board) {
 function update() {
     currentTime = new Date();
     if (currentTime - previousTime > 500) {
-        if (CheckMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
+        if (checkMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
             currentFigure.y += 1;
             redrawingIsNeeded = true;
         } else {
-
+            fillBoard(currentFigure);
             currentFigure = generateFigure();
         }
 
         previousTime = currentTime;
     }
 
-
-    //requestAnimationFrame(update);
 
     //
     //if (isGameOver()) {
@@ -106,23 +116,72 @@ function update() {
     //}
 }
 
-function CheckMove(figure, targetX, targetY) {
-    var xPos = figure.x;
-    var yPos = figure.y;
+function checkMove(figure, targetX, targetY) {
+    var checkX;
+    var checkY;
 
     for (var r = 0; r < figure.matrix.length; r++) {
         for (var c = 0; c < figure.matrix[r].length; c++) {
-            if (figure.matrix[r][c] && r + targetY > rows - 1) {
-                return false;
-            }
-
-            if (figure.matrix[r][c] && (c + targetX < 0 || c + targetX > cols - 1)) {
-                return false;
+            checkX = c + targetX;
+            checkY = r + targetY;
+            if (figure.matrix[r][c]) {
+                if (checkX < 0 || checkX >= cols || checkY >= rows) {
+                    return false;
+                } else {
+                    if (checkY > 0 && board[checkY][checkX]) {
+                        return false;
+                    }
+                }
             }
         }
     }
 
     return true;
+}
+
+function fillBoard(figure) {
+    var x = figure.x;
+    var y = figure.y;
+    for (var r = 0; r < figure.matrix.length; r++) {
+        for (var c = 0; c < figure.matrix[r].length; c++) {
+            if (figure.matrix[r][c]) {
+                board[y + r][x + c] = figure.color;
+            }
+        }
+    }
+
+    CheckLines();
+}
+
+function CheckLines() {
+    var fullRow = true;
+    var lastRow = rows - 1;
+    for (var i = lastRow; i >= 0; i--) {
+        fullRow = true;
+
+        for (var j = 0; j < board[i].length; j++) {
+            if (board[i][j] === 0) {
+                fullRow = false;
+                break;
+            }
+        }
+
+        if (fullRow) {
+            moveDown(i);
+            score++;
+            redrawingIsNeeded = true;
+        }
+    }
+}
+
+function moveDown(row) {
+    while (row > 0) {
+        for (var i = 0; i < cols; i++) {
+            board[row][i] = board[row - 1][i];
+        }
+
+        row--;
+    }
 }
 
 function drawGamePlay() {
@@ -131,6 +190,8 @@ function drawGamePlay() {
         context.clearRect(0, 0, width, height);
 
         drawGameplayButtons();
+
+        drawGameBoard();
 
         drawCurrentFigure(currentFigure);
 
