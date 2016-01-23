@@ -16,6 +16,7 @@ var scale = 20; // cube width/height
 var matrixWidth = verticalLines * scale;
 var matrixHeight = horizontalLines * scale;
 var score = 0;
+var currentFigureColor;
 
 function initializeGameplayElements() {
     document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
@@ -55,7 +56,8 @@ function drawGameBoard() {
             if (board[i][j]) {
                 context.fillStyle = "white";
                 context.fillRect(200 + j * scale, 50 + i * scale, scale, scale);
-
+                context.strokeStyle = "black";
+                context.strokeRect(200 + j * scale, 50 + i * scale, scale, scale);
             }
         }
     }
@@ -81,8 +83,12 @@ function drawCurrentFigure(figure) {
             }
 
             if (matrix[i][j]) {
-                context.fillStyle = "red";
+                context.fillStyle = figure.color;
                 context.fillRect(200 + x * scale + j * scale, 50 + y * scale + i * scale, scale, scale);
+                context.strokeStyle = "black";
+                context.strokeRect(200 + x * scale + j * scale, 50 + y * scale + i * scale, scale, scale);
+                currentFigureColor = figure.color;
+
             }
         }
     }
@@ -111,11 +117,6 @@ function update() {
 
         previousTime = currentTime;
     }
-
-    //if (gameIsPaused) {
-    //   pauseGame();
-    // }
-
 
     //
     //if (isGameOver()) {

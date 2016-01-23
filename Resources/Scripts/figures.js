@@ -27,6 +27,8 @@ var figures = [
         [1, 1, 0]]
 ];
 
+const figureColor = ['red', 'blue', 'yellow', 'brown', 'pink', 'green', 'orange'];
+
 function Figure(index) {
     this.color = 0;
     this.y = -4;
@@ -59,6 +61,8 @@ function generateFigure() {
     var pieceColor = Math.floor(Math.random());
 
     piece = new Figure(figureTypeIndex);
-    piece.color = 1 ;
+
+    // generating random number for the figure color
+    piece.color = figureColor[Math.floor(Math.random() * 7)]; // previously set to 1
     return piece;
 }
