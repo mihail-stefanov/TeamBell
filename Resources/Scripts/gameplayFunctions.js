@@ -59,7 +59,11 @@ function drawCurrentFigure(figure) {
 
     for (var i = 0; i < matrix.length; i++) {
         for (var j = 0; j < matrix[i].length; j++) {
-            if (matrix[i][j]) {
+            if (y + i < 0) {
+                continue;
+            }
+
+            if (matrix[i][j] ) {
                 context.fillStyle = "red";
                 context.fillRect(200 + x * scale + j * scale, 50 + y * scale + i * scale, scale, scale);
             }
@@ -80,10 +84,9 @@ function initializeGameBoard(board) {
 function update() {
     currentTime = new Date();
     if (currentTime - previousTime > 500) {
-        if (true) {
+        if (CheckMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
             currentFigure.y += 1;
             redrawingIsNeeded = true;
-            console.log("gameplay updated");
         } else {
 
             currentFigure = generateFigure();
@@ -92,10 +95,8 @@ function update() {
         previousTime = currentTime;
     }
 
-//    drawGamePlay();
 
-
-//    requestAnimationFrame(update);
+    //requestAnimationFrame(update);
 
     //
     //if (isGameOver()) {
@@ -105,9 +106,28 @@ function update() {
     //}
 }
 
+function CheckMove(figure, targetX, targetY) {
+    var xPos = figure.x;
+    var yPos = figure.y;
+
+    for (var r = 0; r < figure.matrix.length; r++) {
+        for (var c = 0; c < figure.matrix[r].length; c++) {
+            if (figure.matrix[r][c] && r + targetY > rows - 1) {
+                return false;
+            }
+
+            if (figure.matrix[r][c] && (c + targetX < 0 || c + targetX > cols - 1)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 function drawGamePlay() {
     if (redrawingIsNeeded) {
-        
+
         context.clearRect(0, 0, width, height);
 
         drawGameplayButtons();

@@ -20,7 +20,7 @@ var updateIntervalHandle = setInterval(null, 20);
 
 var timer = new Timer();
 
-var difficultyOptions = { easy: 'easy', normal: 'normal', hard: 'hard' };
+var difficultyOptions = {easy: 'easy', normal: 'normal', hard: 'hard'};
 var chosenDifficulty = difficultyOptions.normal;
 
 var score = 0;
@@ -36,7 +36,9 @@ function getMousePosition(eventObject) {
 function getEnvironment() {
     canvas = document.getElementById("gameCanvas");
     context = canvas.getContext("2d");
-    canvas.onselectstart = function() { return false; };  // Preventing double clicking from selecting outside text
+    canvas.onselectstart = function () {
+        return false;
+    };  // Preventing double clicking from selecting outside text
 
     width = canvas.width;
     height = canvas.height;
@@ -44,28 +46,28 @@ function getEnvironment() {
 
 // ==================== DEFINITION OF BUTTONS AND THEIR BEHAVIOUR ====================
 
-function Button(x,y,w,h,color,name) {
+function Button(x, y, w, h, color, name) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.color = color;
     this.name = name;
-    this.draw = function() {
+    this.draw = function () {
         context.fillStyle = this.color;
-        context.fillRect(this.x,this.y,this.w,this.h);
+        context.fillRect(this.x, this.y, this.w, this.h);
     }
 }
 
-var buttonName = { 
-    play: "play", 
-    options: "options", 
-    help: "help", 
+var buttonName = {
+    play: "play",
+    options: "options",
+    help: "help",
     highScores: "highScores",
-    exit: "exit", 
-    easy: "easy", 
-    normal: "normal", 
-    hard: "hard" 
+    exit: "exit",
+    easy: "easy",
+    normal: "normal",
+    hard: "hard"
 };
 
 var buttons = [];
@@ -79,7 +81,7 @@ function highlightButton(eventObject) {
 
     // Looping through the buttons to find if the mouse is over one
     for (var i = 0; i < buttons.length; i++) {
-        var currentButton = buttons[i];            
+        var currentButton = buttons[i];
         var mouseOverlapsButtonOnX = mouseX > currentButton.x && mouseX < currentButton.x + currentButton.w;
         var mouseOverlapsButtonOnY = mouseY > currentButton.y && mouseY < currentButton.y + currentButton.h;
 
@@ -103,7 +105,7 @@ function pressButton(eventObject) {
 
     // Looping through the buttons to find if the mouse is over one
     for (var i = 0; i < buttons.length; i++) {
-        var currentButton = buttons[i];            
+        var currentButton = buttons[i];
         var mouseOverlapsButtonOnX = mouseX > currentButton.x && mouseX < currentButton.x + currentButton.w;
         var mouseOverlapsButtonOnY = mouseY > currentButton.y && mouseY < currentButton.y + currentButton.h;
 
@@ -120,7 +122,7 @@ function releaseButton(eventObject) {
 
     // Looping through the buttons to find if the mouse is over one
     for (var i = 0; i < buttons.length; i++) {
-        var currentButton = buttons[i];            
+        var currentButton = buttons[i];
         var mouseOverlapsButtonOnX = mouseX > currentButton.x && mouseX < currentButton.x + currentButton.w;
         var mouseOverlapsButtonOnY = mouseY > currentButton.y && mouseY < currentButton.y + currentButton.h;
 
@@ -130,45 +132,45 @@ function releaseButton(eventObject) {
             redrawingIsNeeded = true; // may be removed after all options are implemented
 
             // BUTTON SPECIFIC CODE HERE
-            
-            switch(buttons[i].name) {
-                    
+
+            switch (buttons[i].name) {
+
                 case buttonName.play:
                     beginGame();
                     break;
-                    
+
                 case buttonName.options:
                     showGameOptions();
                     break;
-                    
+
                 case buttonName.help:
                     showGameHelp();
                     break;
-                    
+
                 case buttonName.highScores:
                     showHighScores();
                     break;
-                
+
                 case buttonName.exit:
                     initialize();
                     break;
-                    
+
                 case buttonName.easy:
                     chosenDifficulty = difficultyOptions.easy;
                     break;
-                    
+
                 case buttonName.normal:
                     chosenDifficulty = difficultyOptions.normal;
                     break;
-                    
+
                 case buttonName.hard:
                     chosenDifficulty = difficultyOptions.hard;
                     break;
-                    
+
                 default:
             }
-            
-        } 
+
+        }
     }
 }
 
@@ -176,7 +178,7 @@ function releaseButton(eventObject) {
 
 function initialize() {
     getEnvironment();
-    
+
     // Initial drawing
     initializeStartScreenElements();
     drawStartScreen();
@@ -185,8 +187,8 @@ function initialize() {
     clearInterval(updateIntervalHandle);
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawStartScreen, redrawInterval);
-    
-        
+
+
     // Defining mouse events
     canvas.onmousemove = highlightButton;
     canvas.onmousedown = pressButton;
@@ -194,7 +196,7 @@ function initialize() {
 }
 
 function showGameOptions() {
-    
+
     // Initial drawing
     initializeOptionsScreenElements();
     drawOptionsScreen();
@@ -205,7 +207,7 @@ function showGameOptions() {
 }
 
 function showGameHelp() {
-    
+
     // Initial drawing
     initializeHelpScreenElements();
     drawHelpScreen();
@@ -216,7 +218,7 @@ function showGameHelp() {
 }
 
 function showHighScores() {
-    
+
     // Initial drawing
     initializeScoresScreenElements();
     drawScoresScreen();
@@ -228,7 +230,7 @@ function showHighScores() {
 
 
 function beginGame() {
-    
+
     // Initial drawing
     initializeGameplayElements();
     drawGamePlay();
@@ -237,25 +239,30 @@ function beginGame() {
     clearInterval(redrawIntervalHandle);
     updateIntervalHandle = setInterval(update, 20);
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
-    
+
     // Defining events
-    canvas.addEventListener("keydown", moveObjects,false);
+    canvas.addEventListener("keydown", moveObjects, false);
 
 }
 
-var moveObjects = function (e){
-    switch(e.keyCode) {
+var moveObjects = function (e) {
+    switch (e.keyCode) {
         case 37:
             // left key pressed
-            console.log("left");
+            if (CheckMove(currentFigure, currentFigure.x - 1, currentFigure.y)) {
+                currentFigure.x -= 1;
+            }
             break;
         case 38:
             // up key pressed
-            console.log("up");
+            currentFigure.matrix = currentFigure.rotate();
             break;
         case 39:
             // right key pressed
-            console.log("right");
+            if (CheckMove(currentFigure, currentFigure.x + 1, currentFigure.y)) {
+                currentFigure.x += 1;
+            }
+
             break;
         case 40:
             // down key pressed
@@ -266,6 +273,6 @@ var moveObjects = function (e){
 
 // ==================== PERFORMING INITIALIZATION ====================
 
-window.onload = function() {
+window.onload = function () {
     initialize();
 }

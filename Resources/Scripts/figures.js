@@ -29,7 +29,7 @@ var figures = [
 
 function Figure(index) {
     this.color = 0;
-    this.y = 0;
+    this.y = -4;
     this.x = 4;
     this.matrix = figures[index];
 }
