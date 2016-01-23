@@ -43,8 +43,13 @@ Figure.prototype.rotate = function() {
             temp[i][this.matrix.length - j - 1] = this.matrix[j][i];
         }
     }
+    var testFigure = new Figure(0);
+    testFigure.matrix = temp;
+    if (CheckMove(testFigure, this.x, this.y)) {
+        return temp;
+    }
 
-    return temp;
+    return this.matrix;
 };
 
 
