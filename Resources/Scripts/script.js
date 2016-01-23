@@ -18,6 +18,8 @@ var redrawInterval = 20;
 var redrawIntervalHandle = setInterval(null, redrawInterval);
 var updateIntervalHandle = setInterval(null, 20);
 
+var gameIsPaused = false;
+
 var timer = new Timer();
 
 var difficultyOptions = {easy: 'easy', normal: 'normal', hard: 'hard'};
@@ -65,6 +67,7 @@ var buttonName = {
     help: "help",
     highScores: "highScores",
     exit: "exit",
+    pause: "pause",
     easy: "easy",
     normal: "normal",
     hard: "hard"
@@ -155,6 +158,15 @@ function releaseButton(eventObject) {
                     initialize();
                     break;
 
+                case buttonName.pause:
+                    gameIsPaused = !gameIsPaused;
+                    context.clearRect(680,10,50,50);
+                    context.fillStyle = 'gray';
+                    context.fillRect(680,10,50,50);
+                    context.fillStyle = 'black';
+                    context.fillText("\u25BA", 690, 48);
+                    break;
+
                 case buttonName.easy:
                     chosenDifficulty = difficultyOptions.easy;
                     break;
@@ -230,19 +242,20 @@ function showHighScores() {
 
 
 function beginGame() {
-
     // Initial drawing
     initializeGameplayElements();
     drawGamePlay();
     timer.startPause();
     // Drawing loop
-    clearInterval(redrawIntervalHandle);
-    updateIntervalHandle = setInterval(update, 20);
-    redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
-
-    // Defining events
+        clearInterval(redrawIntervalHandle);
+        updateIntervalHandle = setInterval(update, 20);
+        redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
+    // Defining evsents
     canvas.addEventListener("keydown", moveObjects, false);
+}
 
+function pauseGame() {
+    
 }
 
 var moveObjects = function (e) {

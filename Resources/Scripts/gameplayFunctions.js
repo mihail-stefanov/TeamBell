@@ -3,7 +3,7 @@
 // ==================== DEFINITIONS OF THINGS TO EXIST DURING THE GAMEPLAY ====================
 
 //Constants
-var DEFAULT_SCORE_ON_FULL_ROW = 10;
+const DEFAULT_SCORE_ON_FULL_ROW = 10;
 
 var currentFigure;
 var currentTime;
@@ -22,6 +22,7 @@ function initializeGameplayElements() {
     buttons = new Array();
     previousTime = 0;
     buttons.push(new Button(740, 10, 50, 50, "gray", buttonName.exit));
+    buttons.push(new Button(680, 10, 50, 50, "gray", buttonName.pause));
     initializeGameBoard(board);
     currentFigure = generateFigure();
 
@@ -65,6 +66,7 @@ function drawGameplayText() {
     context.fillStyle = "black";
     context.font = '35px Arial';
     context.fillText("X", 753, 47);
+    context.fillText("||", 695, 45);
 }
 
 function drawCurrentFigure(figure) {
@@ -98,7 +100,7 @@ function initializeGameBoard(board) {
 // ==================== FUNCTION CALLED REPETITIVELY ====================
 function update() {
     currentTime = new Date();
-    if (currentTime - previousTime > 500) {
+    if (currentTime - previousTime > 500 && !gameIsPaused) {
         if (checkMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
             currentFigure.y += 1;
             redrawingIsNeeded = true;
@@ -109,6 +111,10 @@ function update() {
 
         previousTime = currentTime;
     }
+
+    //if (gameIsPaused) {
+    //   pauseGame();
+    // }
 
 
     //
@@ -188,7 +194,7 @@ function moveDown(row) {
 }
 
 function drawGamePlay() {
-    if (redrawingIsNeeded) {
+    if (redrawingIsNeeded && !gameIsPaused) {
 
         context.clearRect(0, 0, width, height);
 
