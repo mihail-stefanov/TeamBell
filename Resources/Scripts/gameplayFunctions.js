@@ -2,6 +2,9 @@
 
 // ==================== DEFINITIONS OF THINGS TO EXIST DURING THE GAMEPLAY ====================
 
+//Constants
+var DEFAULT_SCORE_ON_FULL_ROW = 10;
+
 var currentFigure;
 var currentTime;
 var previousTime;
@@ -12,7 +15,7 @@ var offsetY = 50;
 var scale = 20; // cube width/height
 var matrixWidth = verticalLines * scale;
 var matrixHeight = horizontalLines * scale;
-
+var score = 0;
 
 function initializeGameplayElements() {
     document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
@@ -168,7 +171,7 @@ function CheckLines() {
 
         if (fullRow) {
             moveDown(i);
-            score++;
+            score += DEFAULT_SCORE_ON_FULL_ROW;
             redrawingIsNeeded = true;
         }
     }
