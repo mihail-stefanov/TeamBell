@@ -248,14 +248,18 @@ var moveObjects = function (e){
         case 37:
             // left key pressed
             console.log("left");
+            currentFigure.x--;
             break;
         case 38:
             // up key pressed
             console.log("up");
+            currentFigure.matrix = currentFigure.rotate();
+            drawGamePlay();
             break;
         case 39:
             // right key pressed
             console.log("right");
+            currentFigure.x++;
             break;
         case 40:
             // down key pressed

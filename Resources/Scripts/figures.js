@@ -45,7 +45,7 @@ Figure.prototype.rotate = function() {
     }
 
     return temp;
-}
+};
 
 
 function generateFigure() {
