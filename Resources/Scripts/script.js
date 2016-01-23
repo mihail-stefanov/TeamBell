@@ -250,12 +250,21 @@ function beginGame() {
 }
 
 function pauseGame() {
+    //Changing pause state
     gameIsPaused = !gameIsPaused;
+    //Clearing the || sign to change to play
     context.clearRect(680,10,50,50);
     context.fillStyle = 'gray';
     context.fillRect(680,10,50,50);
     context.fillStyle = 'black';
+    //UNICODE play symbol
     context.fillText("\u25BA", 690, 48);
+
+    //annotation
+    context.font = '25px Consolas';
+    context.fillText("GAME IS PAUSED", 205, 130);
+    //setting font back to normal
+    context.font = '35px Consolas';
 }
 
 var moveObjects = function (e) {
