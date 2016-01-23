@@ -10,12 +10,13 @@ var dataRequest = new XMLHttpRequest();
 dataRequest.onreadystatechange = function() {
     if(dataRequest.readyState == 4 && dataRequest.status === 200) {
         scores = JSON.parse(dataRequest.responseText);
+        redrawingIsNeeded = true;
     }
 };
 
 // Performed only once when the game is loaded so that a new score can be added by the current player
-dataRequest.open("GET", "Resources/Data/scores.json", false); // not asynchronous
-dataRequest.send(null); // Sending the request without any parameters
+dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
+dataRequest.send(null);
 
 function initializeScoresScreenElements() {
     buttons = new Array();
@@ -47,32 +48,35 @@ function drawScoresScreenText() {
 }
 
 function drawScores() { 
-    context.font = 'bold 25px Consolas';
+    if (scores != null) {
+        context.font = 'bold 25px Consolas';
     
-    context.fillStyle = "rgb(224, 224, 224)";
-    context.fillRect(75, 83, 615, 40);
-    context.fillStyle = "black";
-    context.fillText("No.", 100, 110);
-    context.fillText("Name", 200, 110);
-    context.fillText("Score", 600, 110);
-    
-    context.font = '25px Consolas';
-    for (var i = 0; i < scores.length; i++) {
-        
-        // Drawing a darker background every even line
-        if (i % 2 == 0) {
-            context.fillStyle = "rgb(154, 154, 154)";
-        } else {
-            context.fillStyle = "rgb(224, 224, 224)";
-        }
-        context.fillRect(75, 83 + (i + 1) * 35, 615, 35);
-        
+        context.fillStyle = "rgb(224, 224, 224)";
+        context.fillRect(75, 83, 615, 40);
         context.fillStyle = "black";
-        var currentPlace = Number(i + 1) + ".";
-        context.fillText(currentPlace, 100, 110 + (i + 1) * 35);
-        context.fillText(scores[i].name, 200, 110 + (i + 1) * 35);
-        context.fillText(scores[i].score, 600, 110 + (i + 1) * 35);
+        context.fillText("No.", 100, 110);
+        context.fillText("Name", 200, 110);
+        context.fillText("Score", 600, 110);
+
+        context.font = '25px Consolas';
+        for (var i = 0; i < scores.length; i++) {
+
+            // Drawing a darker background every even line
+            if (i % 2 == 0) {
+                context.fillStyle = "rgb(154, 154, 154)";
+            } else {
+                context.fillStyle = "rgb(224, 224, 224)";
+            }
+            context.fillRect(75, 83 + (i + 1) * 35, 615, 35);
+
+            context.fillStyle = "black";
+            var currentPlace = Number(i + 1) + ".";
+            context.fillText(currentPlace, 100, 110 + (i + 1) * 35);
+            context.fillText(scores[i].name, 200, 110 + (i + 1) * 35);
+            context.fillText(scores[i].score, 600, 110 + (i + 1) * 35);
+        }
     }
+    
 }
 
 // ==================== FUNCTION CALLED REPETITIVELY ====================
