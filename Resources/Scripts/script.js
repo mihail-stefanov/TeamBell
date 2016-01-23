@@ -159,12 +159,7 @@ function releaseButton(eventObject) {
                     break;
 
                 case buttonName.pause:
-                    gameIsPaused = !gameIsPaused;
-                    context.clearRect(680,10,50,50);
-                    context.fillStyle = 'gray';
-                    context.fillRect(680,10,50,50);
-                    context.fillStyle = 'black';
-                    context.fillText("\u25BA", 690, 48);
+                    pauseGame();
                     break;
 
                 case buttonName.easy:
@@ -255,7 +250,12 @@ function beginGame() {
 }
 
 function pauseGame() {
-    
+    gameIsPaused = !gameIsPaused;
+    context.clearRect(680,10,50,50);
+    context.fillStyle = 'gray';
+    context.fillRect(680,10,50,50);
+    context.fillStyle = 'black';
+    context.fillText("\u25BA", 690, 48);
 }
 
 var moveObjects = function (e) {
