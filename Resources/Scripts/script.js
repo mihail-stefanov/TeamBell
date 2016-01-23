@@ -251,19 +251,21 @@ var moveObjects = function (e) {
             // left key pressed
             if (CheckMove(currentFigure, currentFigure.x - 1, currentFigure.y)) {
                 currentFigure.x -= 1;
+                drawCurrentFigure();
             }
+
             break;
         case 38:
             // up key pressed
             currentFigure.matrix = currentFigure.rotate();
             break;
+            drawCurrentFigure();
         case 39:
             // right key pressed
             if (CheckMove(currentFigure, currentFigure.x + 1, currentFigure.y)) {
                 currentFigure.x += 1;
+                drawCurrentFigure();
             }
-
-            break;
         case 40:
             // down key pressed
             console.log("down");
