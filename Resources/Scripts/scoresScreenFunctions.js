@@ -3,34 +3,9 @@
 // ==================== DEFINITIONS OF THINGS TO EXIST ON THE SCORES SCREEN ====================
 
 function initializeScoresScreenElements() {
+    document.getElementById("gameCanvas").setAttribute("style", "background-image:none");
     buttons = new Array();
     buttons.push(new Button(740,10,50,50,"gray", buttonName.exit));
-    
-    var dataRequest;
-
-    try {
-        dataRequest = new XMLHttpRequest();
-
-        dataRequest.onreadystatechange = function() {
-
-            if(dataRequest.readyState == 4 && dataRequest.status === 200) {
-                scores = JSON.parse(dataRequest.responseText);
-                scoresObtained = true;
-            } else {
-                unableToObtainScores = true;
-            }
-
-            redrawingIsNeeded = true;
-        };
-
-        // Performed only once when the game is loaded so that a new score can be added by the current player
-        dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
-        dataRequest.send(null);
-
-    } catch(err) {
-        unableToObtainScores = true;
-        redrawingIsNeeded = true;
-    }
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================

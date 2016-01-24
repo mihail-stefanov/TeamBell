@@ -31,9 +31,35 @@ function getEnvironment() {
 // ==================== DEFINITION OF COMMON GAMEPLAY VARIABLES ====================
 
 // Scores extracted from a JSON file via AJAX
-var scores;
+var scores = [];
 var scoresObtained = false;
 var unableToObtainScores = false;
+
+var dataRequest;
+
+try {
+    dataRequest = new XMLHttpRequest();
+
+    dataRequest.onreadystatechange = function() {
+
+        if(dataRequest.readyState == 4 && dataRequest.status === 200) {
+            scores = JSON.parse(dataRequest.responseText);
+            scoresObtained = true;
+        } else {
+            unableToObtainScores = true;
+        }
+
+        redrawingIsNeeded = true;
+    };
+
+    // Performed only once when the game is loaded so that a new score can be added by the current player
+    dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
+    dataRequest.send(null);
+
+} catch(err) {
+    unableToObtainScores = true;
+    redrawingIsNeeded = true;
+}
 
 
 // ==================== DEFINITION OF MOUSE POSITION FOR WORK WITH BUTTONS ====================

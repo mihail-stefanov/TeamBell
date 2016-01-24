@@ -19,10 +19,11 @@ function initialize() {
     redrawIntervalHandle = setInterval(drawStartScreen, redrawInterval);
 
 
-    // Defining mouse events
+    // Defining mouse and other events
     canvas.onmousemove = highlightButton;
     canvas.onmousedown = pressButton;
     canvas.onmouseup = releaseButton;
+    canvas.removeEventListener("keydown", moveObjects, false);
 }
 
 function showGameOptions() {
@@ -54,8 +55,12 @@ function showHighScores() {
     drawScoresScreen();
 
     // Drawing loop
+    clearInterval(updateIntervalHandle);
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawScoresScreen, redrawInterval);
+    
+    // Defining evsents
+    canvas.removeEventListener("keydown", moveObjects, false);
 }
 
 
@@ -65,9 +70,9 @@ function beginGame() {
     drawGamePlay();
 
     // Drawing loop
-        clearInterval(redrawIntervalHandle);
-        updateIntervalHandle = setInterval(update, updateInterval);
-        redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
+    clearInterval(redrawIntervalHandle);
+    updateIntervalHandle = setInterval(update, updateInterval);
+    redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
     // Defining evsents
     canvas.addEventListener("keydown", moveObjects, false);
 }

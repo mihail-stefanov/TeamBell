@@ -2,28 +2,28 @@
 
 // ==================== DEFINITIONS OF THINGS TO EXIST DURING THE GAMEPLAY ====================
 
-//Constants
+// Constants
+
+var offsetX = 200;
+var offsetY = 50;
+var scale = 20; // cube width/height
+var rows = 20;
+var cols = 10;
+var board = [];
+
 var DEFAULT_SCORE_ON_FULL_ROW = 10;
+
+var playerName = "";
+var score = 0;
+
+var gameIsPaused = false;
+var gameOverReached = false;
 
 var timer;
 var currentFigure;
 var currentTime;
 var previousTime;
-var horizontalLines = 20;
-var verticalLines = 10;
-var offsetX = 200;
-var offsetY = 50;
-var scale = 20; // cube width/height
-var matrixWidth = verticalLines * scale;
-var matrixHeight = horizontalLines * scale;
-var score = 0;
 var currentFigureColor;
-
-var rows = 20;
-var cols = 10;
-var board = [];
-
-var gameIsPaused = false;
 
 function initializeGameBoard(board) {
     for (var r = 0; r < rows; r++) {
@@ -37,10 +37,14 @@ function initializeGameBoard(board) {
 function initializeGameplayElements() {
     timer = new Timer();
     timer.startPause();
+    gameIsPaused = false;
+    
     document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
+    
     buttons = new Array();
     buttons.push(new Button(740, 10, 50, 50, "gray", buttonName.exit));
     buttons.push(new Button(680, 10, 50, 50, "gray", buttonName.pause));
+    
     previousTime = 0;
     initializeGameBoard(board);
     currentFigure = generateFigure();
@@ -123,19 +127,40 @@ function moveDown(row) {
 function pauseGame() {
     //Changing pause state
     gameIsPaused = !gameIsPaused;
-    //Clearing the || sign to change to play
-    context.clearRect(680,10,50,50);
-    context.fillStyle = 'gray';
-    context.fillRect(680,10,50,50);
-    context.fillStyle = 'black';
-    //UNICODE play symbol
-    context.fillText("\u25BA", 690, 48);
+}
 
-    //annotation
-    context.font = '25px Consolas';
-    context.fillText("GAME IS PAUSED", 205, 130);
-    //setting font back to normal
-    context.font = '35px Consolas';
+// ==================== SHOW SCORE SUBMISSION BOX FUNCTIONS ====================
+
+function addCurrentScoreToHighScores(currentName, currentScore) {
+    var currentPlayerAndScore = {};
+    currentPlayerAndScore.name = currentName;
+    currentPlayerAndScore.score = currentScore;
+    
+    scores.push(currentPlayerAndScore);
+    scores.sort(function(a,b) {
+        return b.score - a.score;
+    });
+    scores.splice(scores.length - 1, 1);
+}
+
+function showScoreSubmissionBox() {
+
+    clearInterval(updateIntervalHandle);
+    clearInterval(redrawIntervalHandle);
+    
+    buttons = new Array();
+    redrawingIsNeeded = true;
+    gameOverReached = false;
+    document.getElementById("scoreSubmissionBox").setAttribute("style", "display: inherit");
+    
+    document.getElementById("scoreText").innerHTML = "Your score is: " + score;
+    
+    document.getElementById("scoreSubmitButton").onclick = function() {
+        var nameWritten = document.getElementById("nameBox").value;
+        addCurrentScoreToHighScores(nameWritten, score);
+        document.getElementById("scoreSubmissionBox").setAttribute("style", "display: none");
+        showHighScores();
+    }
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
@@ -169,7 +194,17 @@ function drawGameplayText() {
     context.fillStyle = "black";
     context.font = '35px Arial';
     context.fillText("X", 753, 47);
-    context.fillText("||", 695, 45);
+    
+    if (!gameIsPaused) {
+        context.fillText("||", 695, 45);
+    } else {
+        //UNICODE play symbol
+        context.fillText("\u25BA", 690, 48);
+
+        //annotation
+        context.font = '25px Consolas';
+        context.fillText("GAME IS PAUSED", 205, 130);
+    }
 }
 
 function drawCurrentFigure(figure) {
@@ -210,6 +245,10 @@ function update() {
 
         previousTime = currentTime;
     }
+    
+    if (gameOverReached) {
+        showScoreSubmissionBox();
+    }
 
     //
     //if (isGameOver()) {
@@ -220,7 +259,7 @@ function update() {
 }
 
 function drawGamePlay() {
-    if (redrawingIsNeeded && !gameIsPaused) {
+    if (redrawingIsNeeded) {
 
         context.clearRect(0, 0, width, height);
 
