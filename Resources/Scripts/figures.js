@@ -27,7 +27,7 @@ var figures = [
         [1, 1, 0]]
 ];
 
-const figureColor = ['red', 'blue', 'yellow', 'brown', 'pink', 'green', 'orange'];
+var figureColor = ['red', 'blue', 'yellow', 'brown', 'pink', 'green', 'orange'];
 
 function Figure(index) {
     this.color = 0;
@@ -36,7 +36,7 @@ function Figure(index) {
     this.matrix = figures[index];
 }
 
-Figure.prototype.rotate = function() {
+Figure.prototype.rotate = function () {
     var temp = [];
 
     for (var i = 0; i < this.matrix[0].length; i++) {

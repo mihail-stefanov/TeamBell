@@ -12,13 +12,6 @@ function initializeOptionsScreenElements() {
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
 
-function drawOptionsScreenButtons() {
-    // Buttons bodies        
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].draw();
-    }
-}
-
 function drawOptionsScreenText() {
     // Title text
     context.fillStyle = "black";
@@ -55,7 +48,7 @@ function drawOptionsScreen() {
     if (redrawingIsNeeded) {
         context.clearRect(0,0,width,height);
 
-        drawOptionsScreenButtons();
+        drawButtons();
         
         drawOptionsScreenText();
 

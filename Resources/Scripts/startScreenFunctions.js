@@ -13,13 +13,6 @@ function initializeStartScreenElements() {
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
 
-function drawStartScreenButtons() {
-    // Buttons bodies        
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].draw();
-    }
-}
-
 function drawStartScreenText() {
     // Title text
     context.fillStyle = "black";
@@ -43,7 +36,7 @@ function drawStartScreen() {
 
         context.clearRect(0,0,width,height);
 
-        drawStartScreenButtons();
+        drawButtons();
         
         drawStartScreenText();
 

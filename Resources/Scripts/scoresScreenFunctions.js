@@ -2,44 +2,38 @@
 
 // ==================== DEFINITIONS OF THINGS TO EXIST ON THE SCORES SCREEN ====================
 
-// Extracting the scores from a JSON file via AJAX
-var scores;
-
-var scoresObtained = false;
-
-var dataRequest;
-
-try {
-    dataRequest = new XMLHttpRequest();
-
-    dataRequest.onreadystatechange = function() {
-        if(dataRequest.readyState == 4 && dataRequest.status === 200) {
-            scores = JSON.parse(dataRequest.responseText);
-            scoresObtained = true;
-            redrawingIsNeeded = true;
-        }
-    };
-
-    // Performed only once when the game is loaded so that a new score can be added by the current player
-    dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
-    dataRequest.send(null);
-} catch(err) {
-    scoresObtained = false;
-}
-
 function initializeScoresScreenElements() {
     buttons = new Array();
     buttons.push(new Button(740,10,50,50,"gray", buttonName.exit));
+    
+    var dataRequest;
+
+    try {
+        dataRequest = new XMLHttpRequest();
+
+        dataRequest.onreadystatechange = function() {
+
+            if(dataRequest.readyState == 4 && dataRequest.status === 200) {
+                scores = JSON.parse(dataRequest.responseText);
+                scoresObtained = true;
+            } else {
+                unableToObtainScores = true;
+            }
+
+            redrawingIsNeeded = true;
+        };
+
+        // Performed only once when the game is loaded so that a new score can be added by the current player
+        dataRequest.open("GET", "https://raw.githubusercontent.com/mihail-stefanov/TeamBell/master/Resources/Data/scores.json", true);
+        dataRequest.send(null);
+
+    } catch(err) {
+        unableToObtainScores = true;
+        redrawingIsNeeded = true;
+    }
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
-
-function drawScoresScreenButtons() {
-    // Buttons bodies        
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].draw();
-    }
-}
 
 function drawScoresScreenText() {
     // Title text
@@ -50,10 +44,6 @@ function drawScoresScreenText() {
     // Buttons text
     context.font = '35px Arial';
     context.fillText("X", 753,47);
-    
-    // High Scores Table
-        // To be defined
-    
 }
 
 function drawScores() { 
@@ -84,8 +74,10 @@ function drawScores() {
             context.fillText(scores[i].name, 200, 110 + (i + 1) * 35);
             context.fillText(scores[i].score, 600, 110 + (i + 1) * 35);
         }
-    } else {
+    } else if (unableToObtainScores) {
         context.fillText("Could not obtain scores at the moment.", 100, 200);
+    } else {
+        context.fillText("Obtaining scores. Please wait.", 100, 200);        
     }
     
 }
@@ -95,8 +87,8 @@ function drawScores() {
 function drawScoresScreen() {
     if (redrawingIsNeeded) {
         context.clearRect(0,0,width,height);
-
-        drawScoresScreenButtons();
+        
+        drawButtons();
         
         drawScoresScreenText();
         

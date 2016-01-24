@@ -9,13 +9,6 @@ function initializeHelpScreenElements() {
 
 // ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
 
-function drawHelpScreenButtons() {
-    // Buttons bodies        
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].draw();
-    }
-}
-
 function drawHelpScreenText() {
     // Title text
     context.fillStyle = "black";
@@ -49,7 +42,7 @@ function drawHelpScreen() {
     if (redrawingIsNeeded) {
         context.clearRect(0,0,width,height);
 
-        drawHelpScreenButtons();
+        drawButtons();
         
         drawHelpScreenText();
 

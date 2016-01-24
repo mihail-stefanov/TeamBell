@@ -1,4 +1,4 @@
-function Timer(){
+function Timer() {
     var totalseconds = 0;
     var running = 0;
 
@@ -10,9 +10,7 @@ function Timer(){
                 var min = Math.floor(totalseconds/60);
                 var secs = totalseconds % 60;
 
-
-
-                if ( min < 10 ){
+                if ( min < 10 ) {
                     min = "0" + min;
                 }
 

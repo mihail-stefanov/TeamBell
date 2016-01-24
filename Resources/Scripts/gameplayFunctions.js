@@ -3,8 +3,9 @@
 // ==================== DEFINITIONS OF THINGS TO EXIST DURING THE GAMEPLAY ====================
 
 //Constants
-const DEFAULT_SCORE_ON_FULL_ROW = 10;
+var DEFAULT_SCORE_ON_FULL_ROW = 10;
 
+var timer;
 var currentFigure;
 var currentTime;
 var previousTime;
@@ -18,81 +19,11 @@ var matrixHeight = horizontalLines * scale;
 var score = 0;
 var currentFigureColor;
 
-function initializeGameplayElements() {
-    document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
-    buttons = new Array();
-    previousTime = 0;
-    buttons.push(new Button(740, 10, 50, 50, "gray", buttonName.exit));
-    buttons.push(new Button(680, 10, 50, 50, "gray", buttonName.pause));
-    initializeGameBoard(board);
-    currentFigure = generateFigure();
+var rows = 20;
+var cols = 10;
+var board = [];
 
-//    window.requestAnimationFrame(update);
-}
-
-// ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
-
-function drawGameplayButtons() {
-    // Buttons bodies        
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].draw();
-    }
-}
-
-function drawScore(score) {
-    context.fillStyle = 'black';
-    context.fillRect(199, 30, 202, 20);
-    context.font = '20px Consolas';
-    context.strokeStyle = 'red';
-
-    var output = 'Score: ' + score;
-    context.strokeText(output, 280, 47);
-//    context.strokeRect(); // Gives error - consider changing
-}
-
-function drawGameBoard() {
-    for (var i = 0; i < board.length; i++) {
-        for (var j = 0; j < board[i].length; j++) {
-            if (board[i][j]) {
-                context.fillStyle = "white";
-                context.fillRect(200 + j * scale, 50 + i * scale, scale, scale);
-                context.strokeStyle = "black";
-                context.strokeRect(200 + j * scale, 50 + i * scale, scale, scale);
-            }
-        }
-    }
-}
-
-function drawGameplayText() {
-    // Buttons text
-    context.fillStyle = "black";
-    context.font = '35px Arial';
-    context.fillText("X", 753, 47);
-    context.fillText("||", 695, 45);
-}
-
-function drawCurrentFigure(figure) {
-    var matrix = figure.matrix;
-    var x = figure.x;
-    var y = figure.y;
-
-    for (var i = 0; i < matrix.length; i++) {
-        for (var j = 0; j < matrix[i].length; j++) {
-            if (y + i < 0) {
-                continue;
-            }
-
-            if (matrix[i][j]) {
-                context.fillStyle = figure.color;
-                context.fillRect(200 + x * scale + j * scale, 50 + y * scale + i * scale, scale, scale);
-                context.strokeStyle = "black";
-                context.strokeRect(200 + x * scale + j * scale, 50 + y * scale + i * scale, scale, scale);
-                currentFigureColor = figure.color;
-
-            }
-        }
-    }
-}
+var gameIsPaused = false;
 
 function initializeGameBoard(board) {
     for (var r = 0; r < rows; r++) {
@@ -103,28 +34,22 @@ function initializeGameBoard(board) {
     }
 }
 
-// ==================== FUNCTION CALLED REPETITIVELY ====================
-function update() {
-    currentTime = new Date();
-    if (currentTime - previousTime > 500 && !gameIsPaused) {
-        if (checkMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
-            currentFigure.y += 1;
-            redrawingIsNeeded = true;
-        } else {
-            fillBoard(currentFigure);
-            currentFigure = generateFigure();
-        }
+function initializeGameplayElements() {
+    timer = new Timer();
+    timer.startPause();
+    document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
+    buttons = new Array();
+    buttons.push(new Button(740, 10, 50, 50, "gray", buttonName.exit));
+    buttons.push(new Button(680, 10, 50, 50, "gray", buttonName.pause));
+    previousTime = 0;
+    initializeGameBoard(board);
+    currentFigure = generateFigure();
 
-        previousTime = currentTime;
-    }
-
-    //
-    //if (isGameOver()) {
-    //    //TODO Draw game over screen
-    //} else {
-    //    requestAnimationFrame(update);
-    //}
+//    window.requestAnimationFrame(update);
 }
+
+// ==================== DEFINITIONS OF THINGS TO BE UPDATED ====================
+
 
 function checkMove(figure, targetX, targetY) {
     var checkX;
@@ -194,12 +119,112 @@ function moveDown(row) {
     }
 }
 
+
+function pauseGame() {
+    //Changing pause state
+    gameIsPaused = !gameIsPaused;
+    //Clearing the || sign to change to play
+    context.clearRect(680,10,50,50);
+    context.fillStyle = 'gray';
+    context.fillRect(680,10,50,50);
+    context.fillStyle = 'black';
+    //UNICODE play symbol
+    context.fillText("\u25BA", 690, 48);
+
+    //annotation
+    context.font = '25px Consolas';
+    context.fillText("GAME IS PAUSED", 205, 130);
+    //setting font back to normal
+    context.font = '35px Consolas';
+}
+
+// ==================== DEFINITIONS OF THINGS TO BE DRAWN ====================
+
+function drawScore(score) {
+    context.fillStyle = 'black';
+    context.fillRect(199, 30, 202, 20);
+    context.font = '20px Consolas';
+    context.strokeStyle = 'red';
+
+    var output = 'Score: ' + score;
+    context.strokeText(output, 280, 47);
+//    context.strokeRect(); // Gives error - consider changing
+}
+
+function drawGameBoard() {
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[i].length; j++) {
+            if (board[i][j]) {
+                context.fillStyle = "white";
+                context.fillRect(200 + j * scale, 50 + i * scale, scale, scale);
+                context.strokeStyle = "black";
+                context.strokeRect(200 + j * scale, 50 + i * scale, scale, scale);
+            }
+        }
+    }
+}
+
+function drawGameplayText() {
+    // Buttons text
+    context.fillStyle = "black";
+    context.font = '35px Arial';
+    context.fillText("X", 753, 47);
+    context.fillText("||", 695, 45);
+}
+
+function drawCurrentFigure(figure) {
+    var matrix = figure.matrix;
+    var x = figure.x;
+    var y = figure.y;
+
+    for (var i = 0; i < matrix.length; i++) {
+        for (var j = 0; j < matrix[i].length; j++) {
+            if (y + i < 0) {
+                continue;
+            }
+
+            if (matrix[i][j]) {
+                context.fillStyle = figure.color;
+                context.fillRect(offsetX + x * scale + j * scale, offsetY + y * scale + i * scale, scale, scale);
+                context.strokeStyle = "black";
+                context.strokeRect(offsetX + x * scale + j * scale, offsetY + y * scale + i * scale, scale, scale);
+                currentFigureColor = figure.color;
+
+            }
+        }
+    }
+}
+
+// ==================== FUNCTIONS CALLED REPETITIVELY ====================
+
+function update() {
+    currentTime = new Date();
+    if (currentTime - previousTime > 500 && !gameIsPaused) {
+        if (checkMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
+            currentFigure.y += 1;
+            redrawingIsNeeded = true;
+        } else {
+            fillBoard(currentFigure);
+            currentFigure = generateFigure();
+        }
+
+        previousTime = currentTime;
+    }
+
+    //
+    //if (isGameOver()) {
+    //    //TODO Draw game over screen
+    //} else {
+    //    requestAnimationFrame(update);
+    //}
+}
+
 function drawGamePlay() {
     if (redrawingIsNeeded && !gameIsPaused) {
 
         context.clearRect(0, 0, width, height);
 
-        drawGameplayButtons();
+        drawButtons();
 
         drawGameBoard();
 
