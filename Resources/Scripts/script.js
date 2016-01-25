@@ -6,7 +6,6 @@
 
 // ==================== DEFINITION OF THE SEPARATE STAGES OF THE GAME ====================
 
-
 function initialize() {
     getEnvironment();
 
@@ -78,10 +77,6 @@ function beginGame() {
     // Defining evsents
     window.addEventListener("keydown", moveObjects, false);
     window.addEventListener("keyup", returnVelocityToDefault, false);
-    canvas.addEventListener('keyup',returnVelocityToDefault,false);
-
-
-    currentVelocity = Number(velocity);
 }
 
 // ==================== PERFORMING INITIALIZATION ====================
