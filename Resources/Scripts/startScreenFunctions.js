@@ -4,6 +4,7 @@
 
 function initializeStartScreenElements() {
     document.getElementById("gameCanvas").setAttribute("style", "background-image:none");
+    timer.reset();
     buttons = new Array();
     buttons.push(new Button(250,175,300,50,"gray", buttonName.play));
     buttons.push(new Button(250,250,300,50,"gray", buttonName.options));

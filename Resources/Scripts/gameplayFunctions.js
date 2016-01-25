@@ -17,7 +17,8 @@ var score = 0;
 var gameIsPaused = false;
 var gameOverReached = false;
 
-var timer;
+var timer = new Timer();
+
 var currentFigure;
 var currentTime;
 var previousTime;
@@ -33,8 +34,14 @@ function initializeGameBoard(board) {
 }
 
 function initializeGameplayElements() {
-    timer = new Timer();
-    timer.startPause();
+    
+    timer.start();
+    
+    score = 0;
+    
+    // Setting the velocity that will be restored once the down key is released
+    currentVelocity = velocity;
+    
     gameIsPaused = false;
     
     document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
@@ -119,15 +126,14 @@ function moveDown(row) {
     }
 }
 
-
 function pauseGame() {
     //Changing pause state
     gameIsPaused = !gameIsPaused;
-    timer.startPause();
+    
     if(gameIsPaused){
-        canvas.removeEventListener('keydown',moveObjects,false);
+        timer.pause();
     }else{
-        canvas.addEventListener('keydown',moveObjects,false);
+        timer.start();
     }
 }
 
@@ -142,7 +148,11 @@ function addCurrentScoreToHighScores(currentName, currentScore) {
     scores.sort(function(a,b) {
         return b.score - a.score;
     });
-    scores.splice(scores.length - 1, 1);
+  
+    // Making sure that only 10 scores are remembered
+    while (scores.length > 10) {
+        scores.splice(scores.length - 1, 1);
+    }
 }
 
 function showScoreSubmissionBox() {
@@ -171,11 +181,17 @@ function drawScore(score) {
     context.fillStyle = 'black';
     context.fillRect(199, 30, 202, 20);
     context.font = '20px Consolas';
-    context.strokeStyle = 'red';
+    context.fillStyle = 'lightgray';
 
     var output = 'Score: ' + score;
-    context.strokeText(output, 280, 47);
+    context.fillText(output, 280, 47);
 //    context.strokeRect(); // Gives error - consider changing
+}
+
+function drawTimer() {
+    context.fillStyle = 'gray';
+    context.font = '15px Consolas';
+    context.fillText("Time playing:" + timer.toString(), 600, 480);
 }
 
 function drawGameBoard() {
@@ -207,6 +223,10 @@ function drawGameplayText() {
         context.font = '25px Consolas';
         context.fillText("GAME IS PAUSED", 205, 130);
     }
+    
+    context.fillStyle = "gray";
+    context.font = '45px Arial';
+    context.fillText("Next:", 500, 90);
 }
 
 function drawCurrentFigure(figure) {
@@ -266,7 +286,7 @@ function update() {
 
 function drawGamePlay() {
     if (redrawingIsNeeded) {
-
+        console.log("active element:" + document.activeElement);
         context.clearRect(0, 0, width, height);
 
         drawButtons();
@@ -276,6 +296,8 @@ function drawGamePlay() {
         drawCurrentFigure(currentFigure);
 
         drawScore(score);
+        
+        drawTimer();
 
         drawGameplayText();
 

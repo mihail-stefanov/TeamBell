@@ -23,7 +23,8 @@ function initialize() {
     canvas.onmousemove = highlightButton;
     canvas.onmousedown = pressButton;
     canvas.onmouseup = releaseButton;
-    canvas.removeEventListener("keydown", moveObjects, false);
+    window.removeEventListener("keydown", moveObjects, false);
+    window.removeEventListener("keyup", returnVelocityToDefault, false);
 }
 
 function showGameOptions() {
@@ -60,7 +61,8 @@ function showHighScores() {
     redrawIntervalHandle = setInterval(drawScoresScreen, redrawInterval);
     
     // Defining evsents
-    canvas.removeEventListener("keydown", moveObjects, false);
+    window.removeEventListener("keydown", moveObjects, false);
+    window.removeEventListener("keyup", returnVelocityToDefault, false);
 }
 
 
@@ -74,7 +76,8 @@ function beginGame() {
     updateIntervalHandle = setInterval(update, updateInterval);
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
     // Defining evsents
-    canvas.addEventListener("keydown", moveObjects, false);
+    window.addEventListener("keydown", moveObjects, false);
+    window.addEventListener("keyup", returnVelocityToDefault, false);
     canvas.addEventListener('keyup',returnVelocityToDefault,false);
 
 

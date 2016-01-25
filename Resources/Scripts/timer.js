@@ -1,43 +1,53 @@
 function Timer() {
     var totalseconds = 0;
-    var running = 0;
-
-    var increment = function(){
-        if(running == 1){
-            setTimeout(function () {
-                totalseconds++;
-
-                var min = Math.floor(totalseconds/60);
-                var secs = totalseconds % 60;
-
-                if ( min < 10 ) {
-                    min = "0" + min;
-                }
-
-                if ( secs < 10 ){
-                    secs = "0" + secs;
-                }
-
-                document.getElementById('timer').innerHTML = min + ":" + secs;
-
-                increment();
-
-            },1000)
-        }};
-
-    this.startPause = function(){
-        if(running == 0){
-            running = 1;
-            increment();
-        }else{
-            running = 0;
+    
+    var minutes = "00";
+    var seconds = "00";
+    
+    var running = false;
+    
+    this.toString = function() {
+        return minutes + ":" + seconds;
+    } 
+    
+    var addingTimeIntervalHandle = setInterval(null, 1000);
+    
+    var increment = function() {
+        totalseconds++;
+        minutes = Math.floor(totalseconds/60);
+        seconds = totalseconds % 60;
+        
+        if (minutes < 10) {
+            minutes = "0" + minutes;
         }
 
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        
+        redrawingIsNeeded = true;
+    };
+
+    this.start = function() {
+        if (!running) {
+            running = true;
+            addingTimeIntervalHandle = setInterval(increment, 1000);
+        } 
+
+    };
+    
+     this.pause = function() {
+        if (running) {
+            running = false;
+            clearInterval(addingTimeIntervalHandle);
+        }
     };
 
     this.reset = function() {
-        running = 0;
+        running = false;
         totalseconds = 0;
-        document.getElementById('timer').innerHTML = '00:00';
+        minutes = "00";
+        seconds = "00";
+        clearInterval(addingTimeIntervalHandle);
     };
 }

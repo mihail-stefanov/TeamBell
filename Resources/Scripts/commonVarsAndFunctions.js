@@ -15,6 +15,7 @@ var redrawIntervalHandle = setInterval(null, redrawInterval);
 
 var difficultyOptions = {easy: 'easy', normal: 'normal', hard: 'hard'};
 var chosenDifficulty = difficultyOptions.normal;
+
 var velocity = 350;
 var currentVelocity;
 
@@ -43,11 +44,11 @@ try {
     dataRequest = new XMLHttpRequest();
 
     dataRequest.onreadystatechange = function() {
-
+        console.log(dataRequest.readyState + " " + dataRequest.status);
         if(dataRequest.readyState == 4 && dataRequest.status === 200) {
             scores = JSON.parse(dataRequest.responseText);
             scoresObtained = true;
-        } else {
+        } else if (dataRequest.readyState == 4 && dataRequest.status != 200) {
             unableToObtainScores = true;
         }
 
@@ -136,9 +137,8 @@ function highlightButton(eventObject) {
 }
 
 function pressButton(eventObject) {
-
     getMousePosition(eventObject);
-
+    
     // Looping through the buttons to find if the mouse is over one
     for (var i = 0; i < buttons.length; i++) {
         var currentButton = buttons[i];
@@ -216,8 +216,9 @@ function releaseButton(eventObject) {
 // ==================== KEY FUNCTION CALLED ON KEY EVENTS ====================
 
 var moveObjects = function (eventObject) {
-
+    
     switch (eventObject.keyCode) {
+
         case 37:
             // left key pressed
             if (checkMove(currentFigure, currentFigure.x - 1, currentFigure.y)) {
@@ -246,12 +247,13 @@ var moveObjects = function (eventObject) {
             break;
     }
 
-
     redrawingIsNeeded = true;
 };
 
 var returnVelocityToDefault = function(eventObject){
+    
     switch (eventObject.keyCode){
+            
         case 40:
             velocity = currentVelocity;
             console.log(velocity);

@@ -4,6 +4,7 @@
 
 function initializeScoresScreenElements() {
     document.getElementById("gameCanvas").setAttribute("style", "background-image:none");
+    timer.reset();
     buttons = new Array();
     buttons.push(new Button(740,10,50,50,"gray", buttonName.exit));
 }
