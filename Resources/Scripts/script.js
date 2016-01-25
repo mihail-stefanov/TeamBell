@@ -18,6 +18,7 @@ function initialize() {
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawStartScreen, redrawInterval);
 
+    timer.reset();
 
     // Defining mouse and other events
     canvas.onmousemove = highlightButton;

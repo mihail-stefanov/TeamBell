@@ -123,6 +123,12 @@ function moveDown(row) {
 function pauseGame() {
     //Changing pause state
     gameIsPaused = !gameIsPaused;
+    timer.startPause();
+    if(gameIsPaused){
+        canvas.removeEventListener('keydown',moveObjects,false);
+    }else{
+        canvas.addEventListener('keydown',moveObjects,false);
+    }
 }
 
 // ==================== SHOW SCORE SUBMISSION BOX FUNCTIONS ====================
