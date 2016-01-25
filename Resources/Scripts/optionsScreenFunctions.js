@@ -32,14 +32,17 @@ function drawOptionsScreenText() {
         case difficultyOptions.easy:
             context.fillText("✔", 212,238);
             velocity = 500;
+            scoreOnFullRow = 5;
             break;
         case difficultyOptions.normal:
             context.fillText("✔", 212,338);
             velocity = 350;
+            scoreOnFullRow = 10;
             break;
         case difficultyOptions.hard:
             context.fillText("✔", 212,438);
             velocity = 200;
+            scoreOnFullRow = 20;
             break;
         default:
     }

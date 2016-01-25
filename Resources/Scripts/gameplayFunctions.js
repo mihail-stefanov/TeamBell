@@ -2,8 +2,6 @@
 
 // ==================== DEFINITIONS OF THINGS TO EXIST DURING THE GAMEPLAY ====================
 
-// Constants
-
 var offsetX = 200;
 var offsetY = 50;
 var scale = 20; // cube width/height
@@ -11,7 +9,7 @@ var rows = 20;
 var cols = 10;
 var board = [];
 
-var DEFAULT_SCORE_ON_FULL_ROW = 10;
+var scoreOnFullRow = 10;
 
 var playerName = "";
 var score = 0;
@@ -105,7 +103,7 @@ function CheckLines() {
 
         if (fullRow) {
             moveDown(i);
-            score += DEFAULT_SCORE_ON_FULL_ROW;
+            score += scoreOnFullRow;
             redrawingIsNeeded = true;
         }
     }
