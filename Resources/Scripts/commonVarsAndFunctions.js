@@ -16,6 +16,7 @@ var redrawIntervalHandle = setInterval(null, redrawInterval);
 var difficultyOptions = {easy: 'easy', normal: 'normal', hard: 'hard'};
 var chosenDifficulty = difficultyOptions.normal;
 var velocity = 350;
+var currentVelocity;
 
 function getEnvironment() {
     canvas = document.getElementById("gameCanvas");
@@ -215,6 +216,7 @@ function releaseButton(eventObject) {
 // ==================== KEY FUNCTION CALLED ON KEY EVENTS ====================
 
 var moveObjects = function (eventObject) {
+
     switch (eventObject.keyCode) {
         case 37:
             // left key pressed
@@ -238,11 +240,23 @@ var moveObjects = function (eventObject) {
             break;
             
         case 40:
-            //velocity /=10;
+            velocity = 100;
+            console.log(velocity);
             // down key pressed
             break;
     }
 
 
     redrawingIsNeeded = true;
-}
+};
+
+var returnVelocityToDefault = function(eventObject){
+    switch (eventObject.keyCode){
+        case 40:
+            velocity = currentVelocity;
+            console.log(velocity);
+            break;
+    }
+
+    redrawingIsNeeded = true;
+};

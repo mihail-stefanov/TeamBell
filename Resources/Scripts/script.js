@@ -6,6 +6,7 @@
 
 // ==================== DEFINITION OF THE SEPARATE STAGES OF THE GAME ====================
 
+
 function initialize() {
     getEnvironment();
 
@@ -17,8 +18,6 @@ function initialize() {
     clearInterval(updateIntervalHandle);
     clearInterval(redrawIntervalHandle);
     redrawIntervalHandle = setInterval(drawStartScreen, redrawInterval);
-
-    timer.reset();
 
     // Defining mouse and other events
     canvas.onmousemove = highlightButton;
@@ -76,10 +75,14 @@ function beginGame() {
     redrawIntervalHandle = setInterval(drawGamePlay, redrawInterval);
     // Defining evsents
     canvas.addEventListener("keydown", moveObjects, false);
+    canvas.addEventListener('keyup',returnVelocityToDefault,false);
+
+
+    currentVelocity = Number(velocity);
 }
 
 // ==================== PERFORMING INITIALIZATION ====================
 
 window.onload = function() {
     initialize();
-}
+};
