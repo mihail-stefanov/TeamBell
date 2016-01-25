@@ -31,12 +31,15 @@ function drawOptionsScreenText() {
     switch(chosenDifficulty) {
         case difficultyOptions.easy:
             context.fillText("✔", 212,238);
+            velocity = 500;
             break;
         case difficultyOptions.normal:
             context.fillText("✔", 212,338);
+            velocity = 350;
             break;
         case difficultyOptions.hard:
             context.fillText("✔", 212,438);
+            velocity = 200;
             break;
         default:
     }

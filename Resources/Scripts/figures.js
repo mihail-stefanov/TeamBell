@@ -58,7 +58,6 @@ Figure.prototype.rotate = function () {
 function generateFigure() {
     var piece;
     var figureTypeIndex = Math.floor(Math.random() * 7);
-    var pieceColor = Math.floor(Math.random());
 
     piece = new Figure(figureTypeIndex);
 

@@ -15,6 +15,7 @@ var redrawIntervalHandle = setInterval(null, redrawInterval);
 
 var difficultyOptions = {easy: 'easy', normal: 'normal', hard: 'hard'};
 var chosenDifficulty = difficultyOptions.normal;
+var velocity = 350;
 
 function getEnvironment() {
     canvas = document.getElementById("gameCanvas");
@@ -233,12 +234,15 @@ var moveObjects = function (eventObject) {
             if (checkMove(currentFigure, currentFigure.x + 1, currentFigure.y)) {
                 currentFigure.x += 1;
             }
+
             break;
             
         case 40:
+            //velocity /=10;
             // down key pressed
             break;
     }
+
 
     redrawingIsNeeded = true;
 }

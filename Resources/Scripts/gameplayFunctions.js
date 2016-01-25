@@ -48,8 +48,6 @@ function initializeGameplayElements() {
     previousTime = 0;
     initializeGameBoard(board);
     currentFigure = generateFigure();
-
-//    window.requestAnimationFrame(update);
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE UPDATED ====================
@@ -180,7 +178,7 @@ function drawGameBoard() {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[i].length; j++) {
             if (board[i][j]) {
-                context.fillStyle = "white";
+                context.fillStyle = board[i][j]
                 context.fillRect(200 + j * scale, 50 + i * scale, scale, scale);
                 context.strokeStyle = "black";
                 context.strokeRect(200 + j * scale, 50 + i * scale, scale, scale);
@@ -230,32 +228,32 @@ function drawCurrentFigure(figure) {
     }
 }
 
+function isGameOver() {
+    if (currentFigure.y < 0) {
+        //console.log('game over');
+        return true;
+    } else {
+        return false;
+    }
+}
+
 // ==================== FUNCTIONS CALLED REPETITIVELY ====================
 
 function update() {
     currentTime = new Date();
-    if (currentTime - previousTime > 500 && !gameIsPaused) {
+    if (currentTime - previousTime > velocity && !gameIsPaused) {
         if (checkMove(currentFigure, currentFigure.x, currentFigure.y + 1)) {
             currentFigure.y += 1;
             redrawingIsNeeded = true;
         } else {
+            gameOverReached = isGameOver();
+
             fillBoard(currentFigure);
             currentFigure = generateFigure();
         }
 
         previousTime = currentTime;
     }
-    
-    if (gameOverReached) {
-        showScoreSubmissionBox();
-    }
-
-    //
-    //if (isGameOver()) {
-    //    //TODO Draw game over screen
-    //} else {
-    //    requestAnimationFrame(update);
-    //}
 }
 
 function drawGamePlay() {
