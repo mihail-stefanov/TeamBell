@@ -254,6 +254,10 @@ function update() {
 
         previousTime = currentTime;
     }
+    
+    if (gameOverReached) {
+        showScoreSubmissionBox();
+    }
 }
 
 function drawGamePlay() {
