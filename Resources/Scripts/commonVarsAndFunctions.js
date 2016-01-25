@@ -240,7 +240,7 @@ var moveObjects = function (eventObject) {
             break;
             
         case 40:
-            velocity = 100;
+            velocity = 90;
             console.log(velocity);
             // down key pressed
             break;
