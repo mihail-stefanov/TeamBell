@@ -6,12 +6,16 @@ function Timer() {
     
     var running = false;
     
-    this.toString = function() {
-        return minutes + ":" + seconds;
-    } 
-    
     var addingTimeIntervalHandle = setInterval(null, 1000);
     
+    this.toString = function() {
+        return minutes + ":" + seconds;
+    }
+    
+    this.getTotalSeconds = function() {
+        return totalseconds;
+    }
+        
     var increment = function() {
         totalseconds++;
         minutes = Math.floor(totalseconds/60);
