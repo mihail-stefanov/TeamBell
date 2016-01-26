@@ -4,6 +4,8 @@
 
 var offsetX = 200;
 var offsetY = 50;
+var nextFigureOffsetX = 500;
+var nextFigureOffsetY = 100;
 var scale = 20; // cube width/height
 var rows = 20;
 var cols = 10;
@@ -20,6 +22,7 @@ var gameOverReached = false;
 var timer = new Timer();
 
 var currentFigure;
+var nextFigure;
 var currentTime;
 var previousTime;
 var currentFigureColor;
@@ -34,25 +37,26 @@ function initializeGameBoard(board) {
 }
 
 function initializeGameplayElements() {
-    
+
     timer.start();
-    
+
     score = 0;
-    
+
     // Setting the velocity that will be restored once the down key is released
     currentVelocity = velocity;
-    
+
     gameIsPaused = false;
-    
+
     document.getElementById("gameCanvas").setAttribute("style", "background-image: url(Resources/Images/gameplayBG.png)");
-    
+
     buttons = new Array();
     buttons.push(new Button(740, 10, 50, 50, "gray", buttonName.exit));
     buttons.push(new Button(680, 10, 50, 50, "gray", buttonName.pause));
-    
+
     previousTime = 0;
     initializeGameBoard(board);
     currentFigure = generateFigure();
+    nextFigure = generateFigure();
 }
 
 // ==================== DEFINITIONS OF THINGS TO BE UPDATED ====================
@@ -130,10 +134,10 @@ function moveDown(row) {
 function pauseGame() {
     //Changing pause state
     gameIsPaused = !gameIsPaused;
-    
-    if(gameIsPaused){
+
+    if (gameIsPaused) {
         timer.pause();
-    }else{
+    } else {
         timer.start();
     }
 }
@@ -144,12 +148,12 @@ function addCurrentScoreToHighScores(currentName, currentScore) {
     var currentPlayerAndScore = {};
     currentPlayerAndScore.name = currentName;
     currentPlayerAndScore.score = currentScore;
-    
+
     scores.push(currentPlayerAndScore);
-    scores.sort(function(a,b) {
+    scores.sort(function (a, b) {
         return b.score - a.score;
     });
-  
+
     // Making sure that only 10 scores are remembered
     while (scores.length > 10) {
         scores.splice(scores.length - 1, 1);
@@ -160,15 +164,15 @@ function showScoreSubmissionBox() {
 
     clearInterval(updateIntervalHandle);
     clearInterval(redrawIntervalHandle);
-    
+
     buttons = new Array();
     redrawingIsNeeded = true;
     gameOverReached = false;
     document.getElementById("scoreSubmissionBox").setAttribute("style", "display: inherit");
-    
+
     document.getElementById("scoreText").innerHTML = "Your score is: " + score;
-    
-    document.getElementById("scoreSubmitButton").onclick = function() {
+
+    document.getElementById("scoreSubmitButton").onclick = function () {
         var nameWritten = document.getElementById("nameBox").value;
         addCurrentScoreToHighScores(nameWritten, score);
         document.getElementById("scoreSubmissionBox").setAttribute("style", "display: none");
@@ -213,7 +217,7 @@ function drawGameplayText() {
     context.fillStyle = "black";
     context.font = '35px Arial';
     context.fillText("X", 753, 47);
-    
+
     if (!gameIsPaused) {
         context.fillText("||", 695, 45);
     } else {
@@ -224,7 +228,7 @@ function drawGameplayText() {
         context.font = '25px Consolas';
         context.fillText("GAME IS PAUSED", 205, 130);
     }
-    
+
     context.fillStyle = "gray";
     context.font = '45px Arial';
     context.fillText("Next:", 500, 90);
@@ -253,8 +257,26 @@ function drawCurrentFigure(figure) {
     }
 }
 
+function drawNextFigure(figure) {
+    var matrix = figure.matrix;
+    var startX = nextFigureOffsetX + ((120 - (matrix[0].length * scale)) / 2);
+    var startY = nextFigureOffsetY + ((120 - (matrix.length * scale)) / 2);
+
+    for (var i = 0; i < matrix.length; i++) {
+        for (var j = 0; j < matrix[i].length; j++) {
+            if (matrix[i][j]) {
+                context.fillStyle = figure.color;
+                context.fillRect(startX + scale * j, startY + scale * i, scale, scale);
+                context.strokeStyle = "black";
+                context.strokeRect(startX + scale * j, startY + scale * i, scale, scale);
+                currentFigureColor = figure.color;
+            }
+        }
+    }
+}
+
 function isGameOver() {
-    if (currentFigure.y < 0) {
+    if (currentFigure.y <= 0) {
         console.log('game over');
         return true;
     } else {
@@ -275,7 +297,8 @@ function update() {
 
             if (!gameOverReached) {
                 fillBoard(currentFigure);
-                currentFigure = generateFigure();
+                currentFigure = nextFigure;
+                nextFigure = generateFigure();
             } else {
                 showScoreSubmissionBox();
             }
@@ -296,8 +319,10 @@ function drawGamePlay() {
 
         drawCurrentFigure(currentFigure);
 
+        drawNextFigure(nextFigure);
+
         drawScore(score);
-        
+
         drawTimer();
 
         drawGameplayText();
