@@ -112,6 +112,7 @@ function CheckLines() {
             moveDown(i);
             score += scoreOnFullRow;
             redrawingIsNeeded = true;
+            i++;
         }
     }
 }
@@ -254,7 +255,7 @@ function drawCurrentFigure(figure) {
 
 function isGameOver() {
     if (currentFigure.y < 0) {
-        //console.log('game over');
+        console.log('game over');
         return true;
     } else {
         return false;
@@ -272,15 +273,15 @@ function update() {
         } else {
             gameOverReached = isGameOver();
 
-            fillBoard(currentFigure);
-            currentFigure = generateFigure();
+            if (!gameOverReached) {
+                fillBoard(currentFigure);
+                currentFigure = generateFigure();
+            } else {
+                showScoreSubmissionBox();
+            }
         }
 
         previousTime = currentTime;
-    }
-    
-    if (gameOverReached) {
-        showScoreSubmissionBox();
     }
 }
 
